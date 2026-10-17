@@ -1,1 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kalkulator Hitungan Jawa</title>
+<style>
+:root{--bg:#f6efe3;--card:#fffaf1;--ink:#3b2a1a;--muted:#7a6650;--accent:#8a5a2b;--gold:#b8862f;--line:#e2d3b8;--chip:#f0e2c8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1610;--card:#2a2018;--ink:#f3e7d3;--muted:#b9a68c;--accent:#e0a867;--gold:#e0b85c;--line:#43342a;--chip:#3a2d22;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1d1610;--card:#2a2018;--ink:#f3e7d3;--muted:#b9a68c;--accent:#e0a867;--gold:#e0b85c;--line:#43342a;--chip:#3a2d22;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5}
+main{max-width:520px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.5rem;margin:8px 0 2px;text-align:center;color:var(--accent)}
+.sub{text-align:center;color:var(--muted);font-size:.9rem;margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+label{display:block;font-size:.85rem;color:var(--muted);margin:10px 0 4px}
+input{width:100%;font:inherit;font-size:1rem;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+input:focus{outline:2px solid var(--gold);outline-offset:1px}
+details{margin-top:10px;font-size:.85rem;color:var(--muted)}
+summary{cursor:pointer}
+button{width:100%;margin-top:14px;padding:13px;font:inherit;font-weight:bold;font-size:1rem;border:0;border-radius:10px;background:var(--accent);color:var(--bg);cursor:pointer}
+h2{font-size:1rem;margin:0 0 10px;color:var(--gold);letter-spacing:.04em;text-transform:uppercase}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chip{background:var(--chip);border-radius:8px;padding:4px 8px;font-size:.85rem;text-align:center}
+.chip b{display:block;font-size:1rem}
+.eq{font-size:.95rem;word-break:break-word}
+.big{font-size:2.2rem;font-weight:bold;color:var(--accent);margin:6px 0 0;line-height:1.1}
+.lbl{font-size:.8rem;color:var(--muted)}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.row>div{flex:1 1 120px}
+.err{color:#b3261e;font-size:.9rem;margin-top:8px}
+.hide{display:none}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+td{padding:4px 6px;border-bottom:1px solid var(--line)}
+tr.on td{background:var(--chip);font-weight:bold;color:var(--accent)}
+.seg{display:flex;gap:8px}
+.seg button{margin:0;background:var(--chip);color:var(--ink);border:1px solid var(--line);font-weight:normal;font-size:.95rem}
+.seg button.on{background:var(--accent);color:var(--bg);font-weight:bold}
+.ry{padding:10px 0;border-bottom:1px solid var(--line)}
+.ry:last-child{border-bottom:0;padding-bottom:0}
+.ry .rh{margin-bottom:4px;font-size:1rem}
+.tag{font-size:.7rem;background:var(--accent);color:var(--bg);border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.bn{font-size:1.4rem;color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+<h1>Kalkulator Hitungan Jawa</h1>
+<p class="sub">Hanacaraka · Weton · Neptu · Ruwat · Rejeki · Cokromanggiling</p>
+
+<div class="card">
+  <div class="seg"><button type="button" class="on" id="m1">Individu</button><button type="button" id="m2">Usaha</button><button type="button" id="m3">Pasangan</button></div>
+  <label for="nama" id="lnama">Nama lengkap</label>
+  <input id="nama" type="text" placeholder="Contoh: Aditya Surya Dharma" autocomplete="off">
+  <div id="wlahir"><label for="tgl" id="ltgl">Tanggal lahir</label><input id="tgl" type="date"></div>
+  <details>
+    <summary>Koreksi ejaan hanacaraka (opsional)</summary>
+    <label for="ejaan">Tulis per suku kata, pisah dengan spasi atau tanda hubung</label>
+    <input id="ejaan" type="text" placeholder="A-di-Ta Su-ya Dha-ma" autocomplete="off">
+  </details>
+  <div id="p2" class="hide">
+    <label for="nama2">Nama pasangan 2</label>
+    <input id="nama2" type="text" placeholder="Contoh: Zalina Marta" autocomplete="off">
+    <label for="tgl2">Tanggal lahir pasangan 2</label>
+    <input id="tgl2" type="date">
+    <details>
+      <summary>Koreksi ejaan pasangan 2 (opsional)</summary>
+      <label for="ejaan2">Tulis per suku kata, pisah dengan spasi atau tanda hubung</label>
+      <input id="ejaan2" type="text" placeholder="Ja-Li-Na Ma-Ta" autocomplete="off">
+    </details>
+  </div>
+  <div id="wnikah" class="hide">
+    <label for="thn">Tahun menikah (Masehi)</label>
+    <input id="thn" type="number" inputmode="numeric" placeholder="Contoh: 2020">
+  </div>
+  <button id="go" type="button">Hitung</button>
+  <div id="err" class="err hide"></div>
+</div>
+
+<div id="out" class="hide"></div>
+</main>
+
+<script>
+
+var HURUF={h:1,n:2,c:3,r:4,k:5,d:6,t:7,s:8,w:9,l:10,p:11,dh:12,j:13,y:14,ny:15,m:16,g:17,b:18,th:19,ng:20,f:11,v:11,z:13,q:5,x:8,kh:5,sy:8,gh:17};
+var CAN={f:'p',v:'p',z:'j',q:'k',x:'s',kh:'k',sy:'s',gh:'g'};
+var NAMA_HURUF=['','ha','na','ca','ra','ka','da','ta','sa','wa','la','pa','dha','ja','ya','nya','ma','ga','ba','tha','nga'];
+var DI=['ng','ny','dh','th','kh','sy','gh'];
+var VOK='aiueo';
+var HARI=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+var NHARI=[5,4,3,7,8,6,9];
+var PAS=['Legi','Pahing','Pon','Wage','Kliwon'];
+var NPAS=[5,9,7,4,8];
+var BULAN=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+var RUWAT={7:'Emas putih / perak',8:'Kasur, guling / bantal',9:'Jarik',10:'Jarik',11:'Ikan loh / kali',12:'Ingkung',13:'Keris',14:'Jarik',15:'Emas muda',16:'Beras abang',17:'Dodot putih',18:'Dodot abang'};
+
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function norm(s){return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()}
+
+function tokens(w){
+  var t=[],i=0;
+  while(i<w.length){
+    var two=w.substr(i,2);
+    if(DI.indexOf(two)>-1){t.push(two);i+=2}else{t.push(w[i]);i++}
+  }
+  return t;
+}
+function isV(t){return t.length===1&&VOK.indexOf(t)>-1}
+
+// Satu suku kata = konsonan awal + vokal. Konsonan penutup tidak dihitung.
+// Gugus konsonan + r (cakra) atau + y (pengkal): yang dihitung konsonan dasarnya (dri -> di, tya -> ta).
+// Kecuali konsonan sebelumnya r, ng, h (sandhangan): r/y dihitung sendiri (Surya -> Su-ya).
+// f, v -> pa; z -> ja.
+function sukuDariNama(nama){
+  var out=[];
+  norm(nama).split(/[^a-z]+/).forEach(function(w,wi){
+    if(!w)return;
+    var t=tokens(w);
+    for(var i=0;i<t.length;i++){
+      if(!isV(t[i]))continue;
+      var on='h',real=false;
+      if(i>0&&!isV(t[i-1])){
+        on=t[i-1];real=true;
+        var P=i>1?t[i-2]:null;
+        if((on==='r'||on==='y')&&P&&!isV(P)&&P!=='r'&&P!=='ng'&&P!=='h')on=P;
+      }
+      if(HURUF[on]===undefined){on='h';real=false}
+      out.push({s:(real?(CAN[on]||on):'')+t[i],o:on,w:wi});
+    }
+  });
+  return out;
+}
+function sukuDariEjaan(txt){
+  var out=[];
+  norm(txt).split(/[\s\-]+/).forEach(function(w){
+    w=w.replace(/[^a-z]/g,'');
+    if(!w)return;
+    var t=tokens(w),vi=-1;
+    for(var i=0;i<t.length;i++){if(isV(t[i])){vi=i;break}}
+    if(vi<0)return;
+    var on=vi>0?t[vi-1]:'h';
+    if(HURUF[on]===undefined)on='h';
+    out.push({s:w,o:on});
+  });
+  return out;
+}
+
+var mode='individu';
+// Tahun Jawa: siklus windu 8 tahun. Alip, Ehe, Jimawal, Je, Dal, Be, Wawu, Jimakir.
+// Panjang tahun: Ehe, Dal, Jimakir = 355 hari, lainnya 354. Patokan: 1 Suro 1960 (Be) = 17 Juni 2026.
+// Urutan array mengikuti sisa (tahun Jawa mod 8): 0=Be, 1=Wawu, 2=Jimakir, 3=Alip, 4=Ehe, 5=Jimawal, 6=Je, 7=Dal.
+var TJ=['Be','Wawu','Jimakir','Alip','Ehe','Jimawal','Je','Dal'];
+var TJ2=['Bromo','Kala','Uma','Sri','Hindra','Guru','Yama','Lodra'];
+var TJN=[2,6,3,1,5,3,7,4];
+var TJL=[354,354,355,354,355,354,354,355];
+var D0=Date.UTC(2026,5,17)/864e5;
+function suroDay(Y){
+  var d=D0,y;
+  if(Y>=1960){for(y=1960;y<Y;y++)d+=TJL[y%8]}
+  else{for(y=Y;y<1960;y++)d-=TJL[y%8]}
+  return d;
+}
+function tahunJawa(days,ce){
+  var Y=ce-66;
+  while(suroDay(Y+1)<=days)Y++;
+  while(suroDay(Y)>days)Y--;
+  return Y;
+}
+var RJK=[
+  'Sedang dalam keadaan sulit, harus lebih waspada dan berhati-hati, banyak mendekatkan diri ke Yang Maha Kuasa.',
+  'Keadaan sulit, tapi masih bisa dicari jalan keluarnya jika berusaha bersungguh-sungguh.',
+  'Keadaan di tengah-tengah, seimbang antara kesulitan dan kemudahan, jadi harus mencari faktor luck-nya.',
+  'Rejeki berlimpah, serta dipenuhi keberuntungan.',
+  'Rejeki berlimpah, namun harus berhati-hati dengan masalah yang berdatangan.'
+];
+
+var CYC=[4,5,7,8,9];
+function card(h,b){return '<div class="card"><h2>'+h+'</h2>'+b+'</div>'}
+function analisa(n,e){
+  var suku=e?sukuDariEjaan(e):sukuDariNama(n);
+  var vals=suku.map(function(x){return HURUF[x.o]});
+  var total=vals.reduce(function(a,b){return a+b},0);
+  var ejaan='';
+  if(!e){var g={};suku.forEach(function(x){(g[x.w]=g[x.w]||[]).push(x.s.charAt(0).toUpperCase()+x.s.slice(1))});ejaan=Object.keys(g).map(function(k){return g[k].join('-')}).join(' ')}
+  return {nama:n||e,suku:suku,vals:vals,total:total,bagi:Math.floor(total/7),sisa:total%7,ejaan:ejaan};
+}
+function weton(tgl){
+  var p=tgl.split('-').map(Number),days=Math.floor(Date.UTC(p[0],p[1]-1,p[2])/864e5);
+  var hi=((days+4)%7+7)%7,pi=((days+3)%5+5)%5;   // 1 Jan 1970 = Kamis Wage
+  return {hari:HARI[hi],pas:PAS[pi],nh:NHARI[hi],np:NPAS[pi],tgl:p[2]+' '+BULAN[p[1]-1]+' '+p[0]};
+}
+function kNama(r,ju){
+  var ch=r.suku.map(function(x,i){return '<div class="chip">'+esc(x.s)+'<b>'+r.vals[i]+'</b><span class="lbl">'+NAMA_HURUF[r.vals[i]]+'</span></div>'}).join('');
+  return card(ju+'Hitungan Nama','<div class="lbl" style="margin-bottom:8px">'+esc(r.nama)+'</div><div class="chips">'+ch+'</div>'
+    +(r.ejaan?'<div class="lbl" style="margin-bottom:6px">Ejaan: '+esc(r.ejaan)+'</div>':'')
+    +'<div class="eq">'+r.vals.join('+')+' = '+r.total+'  →  '+r.total+' ÷ 7 = '+r.bagi+' sisa '+r.sisa+'</div>'
+    +'<div class="lbl" style="margin-top:10px">Sisa</div><div class="big">'+r.sisa+'</div>');
+}
+function kWeton(w,ju){
+  return card(ju+'Weton &amp; Neptu','<div class="lbl">'+w.tgl+'</div><div class="big" style="font-size:1.7rem">'+w.hari+' '+w.pas+'</div>'
+    +'<div class="eq" style="margin-top:6px">'+w.hari+' '+w.nh+' + '+w.pas+' '+w.np+'  →  '+w.nh+'+'+w.np+' = '+(w.nh+w.np)+'</div>');
+}
+function kRuwat(neptu,ju,tbl){
+  var rows='';
+  if(tbl){for(var k=7;k<=18;k++){rows+='<tr'+(k===neptu?' class="on"':'')+'><td>'+k+'</td><td>'+RUWAT[k]+'</td></tr>'}rows='<table style="margin-top:12px">'+rows+'</table>'}
+  return card(ju+'Ruwat','<div class="big" style="font-size:1.7rem">'+neptu+' = '+RUWAT[neptu]+'</div>'+rows);
+}
+function kRejeki(total){
+  var n=new Date(),days=Math.floor(Date.UTC(n.getFullYear(),n.getMonth(),n.getDate())/864e5);
+  var Y=tahunJawa(days,n.getFullYear()),h='';
+  for(var i=0;i<5;i++){
+    var y=Y+i,r=y%8,nil=TJN[r],jml=total+nil,s5=jml%5;
+    var sd=new Date(suroDay(y)*864e5);
+    var mulai=sd.getUTCDate()+' '+BULAN[sd.getUTCMonth()]+' '+sd.getUTCFullYear();
+    h+='<div class="ry"><div class="rh"><b>Tahun '+TJ[r]+'</b> / '+TJ2[r]+(i===0?'<span class="tag">tahun ini</span>':'')+'</div>'
+      +'<div class="lbl">'+y+' · mulai 1 Suro '+mulai+' · nilai '+nil+'</div>'
+      +'<div class="eq" style="margin-top:4px">'+total+' + '+nil+' = '+jml+'  →  '+jml+' ÷ 5 = '+Math.floor(jml/5)+' sisa <b>'+s5+'</b></div>'
+      +'<div class="eq" style="color:var(--muted);margin-top:2px">'+RJK[s5]+'</div></div>';
+  }
+  return card('Rejeki 5 Tahun ke Depan',h);
+}
+// Cokromanggiling: neptu hari tetap, neptu pasaran berputar 4,5,7,8,9 tiap 5 tahun. Nilai = angka satuan (mod 10) dari total kedua pasangan.
+function kCokro(a,b,thn){
+  var ia=CYC.indexOf(a.np),ib=CYC.indexOf(b.np),h='';
+  for(var k=0;k<5;k++){
+    var pa=CYC[(ia+k)%5],pb=CYC[(ib+k)%5],sa=a.nh+pa,sb=b.nh+pb,tot=sa+sb;
+    h+='<div class="ry"><div class="rh"><b>Periode '+(k+1)+'</b> · '+(thn+5*k)+'–'+(thn+5*k+5)+'</div>'
+      +'<div class="eq">('+a.nh+'+'+pa+') + ('+b.nh+'+'+pb+') = '+sa+' + '+sb+' = '+tot+'</div>'
+      +'<div class="eq" style="margin-top:4px">Nilai: <b class="bn">'+(tot%10)+'</b></div></div>';
+  }
+  return card('Cokromanggiling · 25 Tahun',h);
+}
+function tampilErr(m){var e=$('err');e.textContent=m;e.className='err';$('out').className='hide'}
+function hitung(){
+  $('err').className='err hide';
+  var ps=[{n:$('nama').value.trim(),e:$('ejaan').value.trim(),t:$('tgl').value}];
+  if(mode==='pasangan')ps.push({n:$('nama2').value.trim(),e:$('ejaan2').value.trim(),t:$('tgl2').value});
+  var res=[],i;
+  for(i=0;i<ps.length;i++){
+    var lb=mode==='pasangan'?' pasangan '+(i+1):'';
+    if(!ps[i].n&&!ps[i].e)return tampilErr('Isi nama'+lb+' dulu ya.');
+    if(mode!=='usaha'&&!ps[i].t)return tampilErr('Isi tanggal lahir'+lb+' dulu ya.');
+    var r=analisa(ps[i].n,ps[i].e);
+    if(!r.suku.length)return tampilErr('Nama'+lb+' tidak terbaca. Coba isi koreksi ejaan.');
+    res.push(r);
+  }
+  var thn=parseInt($('thn').value,10);
+  if(mode==='pasangan'&&!(thn>=1900&&thn<=2200))return tampilErr('Isi tahun menikah dulu ya (contoh: 2020).');
+  var h='',w;
+  if(mode==='usaha'){h=kNama(res[0],'')+kRejeki(res[0].total)}
+  else if(mode==='individu'){w=weton(ps[0].t);h=kNama(res[0],'')+kRejeki(res[0].total)+kWeton(w,'')+kRuwat(w.nh+w.np,'',true)}
+  else{
+    var ws=[weton(ps[0].t),weton(ps[1].t)];
+    for(i=0;i<2;i++){var ju='Pasangan '+(i+1)+' · ';h+=kNama(res[i],ju)+kWeton(ws[i],ju)+kRuwat(ws[i].nh+ws[i].np,ju,false)}
+    h+=kCokro(ws[0],ws[1],thn);
+  }
+  $('out').innerHTML=h;$('out').className='';
+}
+function setMode(m){
+  mode=m;
+  ['individu','usaha','pasangan'].forEach(function(k,i){$('m'+(i+1)).className=(k===m)?'on':''});
+  $('lnama').textContent=m==='usaha'?'Nama usaha':(m==='pasangan'?'Nama pasangan 1':'Nama lengkap');
+  $('nama').placeholder=m==='usaha'?'Contoh: Toko Sumber Rejeki':'Contoh: Aditya Surya Dharma';
+  $('ltgl').textContent=m==='pasangan'?'Tanggal lahir pasangan 1':'Tanggal lahir';
+  $('wlahir').className=m==='usaha'?'hide':'';
+  $('p2').className=m==='pasangan'?'':'hide';
+  $('wnikah').className=m==='pasangan'?'':'hide';
+  $('out').className='hide';$('err').className='err hide';
+}
+$('go').addEventListener('click',hitung);
+['m1','m2','m3'].forEach(function(id,i){$(id).addEventListener('click',function(){setMode(['individu','usaha','pasangan'][i])})});
+['nama','tgl','ejaan','nama2','tgl2','ejaan2','thn'].forEach(function(id){
+  $(id).addEventListener('keydown',function(e){if(e.key==='Enter')hitung()});
+});
+</script>
+</body>
+</html>
 
